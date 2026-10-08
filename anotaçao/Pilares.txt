@@ -1,0 +1,27 @@
+OS 4 PILARES DA PROGRAMAÇÃO ORIENTADA A OBJETOS (POO):
+
+1. ABSTRAÇÃO:
+É o processo de esconder detalhes desnecessários e mostrar apenas
+o que é importante. Em Java, pode ser feita usando classes e métodos
+abstratos.
+
+2. HERANÇA:
+Permite que uma classe herde características e métodos de outra classe.
+Em Java, usamos "extends". Exemplo: um Cachorro pode herdar de Animal.
+
+3. POLIMORFISMO:
+Significa "muitas formas". Permite que o mesmo método tenha
+comportamentos diferentes dependendo do objeto. Por exemplo, um
+Cachorro pode fazer "Au au!" e um Gato pode fazer "Miau!".
+
+4. ENCAPSULAMENTO:
+É a proteção dos dados de uma classe, impedindo o acesso direto
+a eles. Em Java, usamos principalmente "private", "get" e "set"
+para controlar o acesso aos atributos.
+
+RESUMO:
+
+Abstração = esconder detalhes.
+Herança = herdar características.
+Polimorfismo = diferentes comportamentos.
+Encapsulamento = proteger os dados.
