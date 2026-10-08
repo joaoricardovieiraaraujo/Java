@@ -59,7 +59,7 @@ public class Pilares {
 // ABSTRAÇÃO
 abstract class Animal {
     // ENCAPSULAMENTO
-    private String nome;
+    private final String nome;
 
     public Animal(String nome) {
         this.nome = nome;
