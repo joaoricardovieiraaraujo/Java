@@ -1,0 +1,104 @@
+JAVA — printf(), formatação e Scanner
+================================================
+
+1. printf() — mostrar valores formatados
+----------------------------------------
+O System.out.printf() permite controlar como os valores aparecem na tela.
+
+Exemplo:
+double saldo = 89.9;
+System.out.printf("Seu saldo é: R$ %.2f%n", saldo);
+
+Significado:
+- %f   : mostra um número decimal.
+- %.2f : mostra o número com duas casas decimais.
+- %n   : pula para a próxima linha.
+
+Exemplo de saída (com localidade brasileira):
+Seu saldo é: R$ 89,90
+
+A vírgula ou o ponto decimal depende da localidade configurada.
+Para usar a localidade brasileira:
+
+import java.util.Locale;
+System.out.printf(Locale.forLanguageTag("pt-BR"), "Saldo: R$ %.2f%n", saldo);
+
+Não é necessário trocar todos os println() por printf():
+- println() : mostra uma mensagem e pula para a próxima linha.
+- print()   : mostra uma mensagem sem pular a linha.
+- printf()  : mostra uma mensagem com formatação.
+
+2. Scanner — nextInt() e nextDouble()
+-------------------------------------
+Use nextInt() para ler números inteiros:
+int opcao = input.nextInt();
+
+Exemplos: 1, 2, 10, 100.
+Ele não serve para ler diretamente valores com centavos, como 25.50.
+
+Use nextDouble() para ler números decimais:
+double saque = input.nextDouble();
+double deposito = input.nextDouble();
+
+Exemplos: 25.50, 10.75, 100.00.
+
+A forma de digitar o separador decimal depende da localidade do Scanner.
+Por padrão, muitos ambientes Java esperam ponto (25.50).
+Para configurar o padrão brasileiro:
+
+import java.util.Locale;
+Scanner input = new Scanner(System.in).useLocale(Locale.forLanguageTag("pt-BR"));
+
+Com essa configuração, normalmente digite 25,50.
+
+Importante: se a variável é double e você quer aceitar centavos, use
+nextDouble(). Declarar uma variável como double, mas ler com nextInt(),
+não permite digitar um valor decimal.
+
+3. Validação de saque e depósito
+--------------------------------
+Para permitir um saque positivo que não ultrapasse o saldo:
+
+if (saque > 0 && saque <= saldo) {
+    saldo -= saque;
+}
+
+- && significa E: as duas condições precisam ser verdadeiras.
+- saldo -= saque equivale a saldo = saldo - saque.
+- Se aceitar saque negativo, subtrair um número negativo aumenta o saldo.
+  Exemplo: 100 - (-5) = 105.
+- Por isso, verifique se saque > 0.
+
+Para permitir depósito apenas se for positivo:
+
+if (deposito > 0) {
+    saldo += deposito;
+}
+
+- saldo += deposito equivale a saldo = saldo + deposito.
+- Não permita valores iguais a zero ou negativos.
+
+4. Formate também saque, depósito e saldo
+-----------------------------------------
+Para mostrar valores com duas casas decimais:
+
+System.out.printf("Saque: R$ %.2f%n", saque);
+System.out.printf("Depósito: R$ %.2f%n", deposito);
+System.out.printf("Saldo: R$ %.2f%n", saldo);
+
+5. Fechar o Scanner
+-------------------
+Quando o programa terminar, você pode chamar:
+input.close();
+
+Em um programa com while (true), feche o Scanner quando não precisar mais
+ler entradas. Não use o Scanner depois de fechá-lo.
+
+RESUMO
+------
+- int + nextInt()       : números inteiros.
+- double + nextDouble() : números que podem ter casas decimais.
+- %.2f                  : exibe duas casas decimais com printf().
+- %n                    : quebra de linha em printf().
+- &&                    : operador lógico E.
+- Valide os valores para impedir saques e depósitos inválidos.
