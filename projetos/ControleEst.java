@@ -43,7 +43,7 @@ public class ControleEst {
                         System.out.println("Preço inválido ou quantidade negativa!");
                         break;
                     }
-                    
+
                     nomes.add(nome1);
                     precos.add(precoUn1);
                     quantidades.add(quant1);
@@ -146,6 +146,7 @@ public class ControleEst {
                     System.out.println("==== Programa finalizado ====");
                     input.close();
                     return;
+                    
                 default:
                     System.out.println("Opção inválida! Escolha de 1 a 5.");
                     break;
