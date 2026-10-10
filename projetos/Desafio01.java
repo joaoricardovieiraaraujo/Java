@@ -1,4 +1,4 @@
-public class HelloJav {
+public class Desafio01 {
     public static void main(String[] args) { //Iniciar programa
         System.out.println("Olá, mundo!");
         System.out.println("Estou aprendendo Java!");
