@@ -1,6 +1,8 @@
 
 import java.util.ArrayList;
 import java.util.Scanner;
+
+
 public class ControleEst {
     public static void main(String[] args) {
 
@@ -20,7 +22,6 @@ public class ControleEst {
             System.out.println("[ 5 ] - Sair");
             System.out.println("Escolha a opção: ");
             int op = input.nextInt();
-
             switch (op) {
                 case 1:
                     input.nextLine();

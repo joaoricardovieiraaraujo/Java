@@ -1,0 +1,595 @@
+# ANOTAÇÕES JAVA — CONTROLE DE ESTOQUE
+
+## 1. ArrayList
+
+O `ArrayList` permite armazenar vários valores em uma lista que pode aumentar ou diminuir de tamanho.
+
+Importação:
+
+```java
+import java.util.ArrayList;
+```
+
+Exemplo:
+
+```java
+ArrayList<String> nomes = new ArrayList<>();
+ArrayList<Double> precos = new ArrayList<>();
+ArrayList<Integer> quantidades = new ArrayList<>();
+```
+
+- `String`: armazena textos.
+- `Double`: armazena números decimais.
+- `Integer`: armazena números inteiros.
+- `new ArrayList<>()`: cria uma lista vazia.
+
+No projeto, cada posição representa um produto. Por isso, o nome, o preço e a quantidade precisam ser adicionados e consultados usando o mesmo índice nas três listas.
+
+**Atenção:** essa forma funciona, mas exige cuidado para não misturar os índices. No futuro, uma classe `Produto` pode reunir essas informações em um único objeto.
+
+---
+
+## 2. Métodos importantes do ArrayList
+
+### `.add()`
+
+Adiciona um elemento ao final da lista.
+
+```java
+nomes.add(nome1);
+precos.add(precoUn1);
+quantidades.add(quant1);
+```
+
+Esquecimento comum: cadastrar as informações nas variáveis, mas esquecer de adicioná-las às listas. Se isso acontecer, o produto não aparecerá na consulta.
+
+### `.get()`
+
+Obtém o elemento de uma posição específica.
+
+```java
+nomes.get(i);
+precos.get(i);
+quantidades.get(i);
+```
+
+O índice começa em `0`, não em `1`.
+
+Exemplo:
+
+- Índice `0`: primeiro produto.
+- Índice `1`: segundo produto.
+- Índice `2`: terceiro produto.
+
+Não confunda o índice com a quantidade de elementos.
+
+### `.set()`
+
+Substitui o valor que está em uma posição específica.
+
+```java
+quantidades.set(escolha,
+    quantidades.get(escolha) - venda);
+```
+
+Essa linha atualiza a quantidade depois de uma venda.
+
+Exemplo: havia 10 unidades e foram vendidas 3. A lista passa a guardar 7.
+
+Para repor o estoque:
+
+```java
+quantidades.set(escolha1,
+    quantidades.get(escolha1) + reposicao);
+```
+
+O `.set()` não adiciona uma nova posição: ele altera uma posição que já existe.
+
+### `.size()`
+
+Retorna o número de elementos que existem na lista.
+
+```java
+nomes.size()
+```
+
+É muito usado em laços `for`:
+
+```java
+for (int i = 0; i < nomes.size(); i++) {
+    System.out.println(nomes.get(i));
+}
+```
+
+O laço começa no índice `0` e continua enquanto `i` for menor que o tamanho da lista.
+
+Por que usar `<` em vez de `<=`?
+
+Se houver 3 produtos, os índices válidos são `0`, `1` e `2`. O índice `3` não existe. Por isso, a condição correta é:
+
+```java
+i < nomes.size()
+```
+
+### `.isEmpty()`
+
+Verifica se a lista está vazia.
+
+```java
+if (nomes.isEmpty()) {
+    System.out.println("Nenhum produto cadastrado!");
+}
+```
+
+- Retorna `true` se não houver elementos.
+- Retorna `false` se houver pelo menos um elemento.
+
+**Correção do nome:** é `.isEmpty()`, com um único `p` e dois `m`.
+
+Você pode usar esse método antes de consultar, vender ou repor produtos.
+
+### `.trim()`
+
+Remove os espaços em branco do começo e do final de um texto.
+
+```java
+if (nome1.trim().isEmpty()) {
+    System.out.println("O nome não pode ficar vazio!");
+}
+```
+
+Isso impede que alguém cadastre um nome contendo apenas espaços, como `"     "`.
+
+O `.trim()` não altera automaticamente a variável original. Ele retorna um texto sem os espaços das extremidades.
+
+---
+
+## 3. Validação do cadastro
+
+Antes de adicionar o produto às listas, é importante validar os dados.
+
+```java
+if (nome1.trim().isEmpty()) {
+    System.out.println("O nome não pode ficar vazio!");
+    break;
+}
+```
+
+O `break` encerra o `switch` naquele momento, evitando que o restante do cadastro seja executado.
+
+Depois de ler preço e quantidade:
+
+```java
+if (precoUn1 <= 0 || quant1 < 0) {
+    System.out.println("Preço inválido ou quantidade negativa!");
+    break;
+}
+```
+
+O operador `||` significa **OU**.
+
+A condição será verdadeira quando:
+- O preço for menor ou igual a zero; ou
+- A quantidade for negativa.
+
+Somente depois das validações os dados devem ser adicionados:
+
+```java
+nomes.add(nome1);
+precos.add(precoUn1);
+quantidades.add(quant1);
+```
+
+**Erro que você poderia cometer:** adicionar o produto às listas antes de validar o preço e a quantidade. Isso permitiria que dados inválidos fossem cadastrados.
+
+A quantidade igual a zero é aceita nessa validação. Isso pode ser útil para cadastrar um produto que está temporariamente sem estoque.
+
+---
+
+## 4. Consultar todos os produtos
+
+Para exibir todos os produtos cadastrados:
+
+```java
+for (int i = 0; i < nomes.size(); i++) {
+    System.out.println("Nome: " + nomes.get(i));
+    System.out.println("Quantidade: " + quantidades.get(i));
+}
+```
+
+O `for` percorre a lista inteira. Em cada repetição, `i` indica qual produto será exibido.
+
+No seu projeto, você também calculou o valor total de cada produto em estoque:
+
+```java
+double total = precos.get(i) * quantidades.get(i);
+
+System.out.printf(
+    "Valor total em estoque: R$ %.2f%n", total);
+```
+
+A fórmula é:
+
+**Valor total em estoque = preço unitário × quantidade disponível.**
+
+Exemplo: preço de R$ 5,00 e quantidade de 4 unidades resultam em R$ 20,00 em estoque.
+
+---
+
+## 5. Validação do produto escolhido
+
+Na venda e na reposição, você mostra os produtos com seus índices:
+
+```java
+for (int i = 0; i < nomes.size(); i++) {
+    System.out.println("[" + i + "] " + nomes.get(i));
+}
+```
+
+Depois, lê a escolha:
+
+```java
+int escolha = input.nextInt();
+```
+
+É necessário verificar se o índice existe:
+
+```java
+if (escolha < 0 || escolha >= nomes.size()) {
+    System.out.println("Produto inválido!");
+    break;
+}
+```
+
+O operador `||` significa OU.
+
+A escolha é inválida se for menor que zero ou maior ou igual ao tamanho da lista.
+
+Por que usar `escolha >= nomes.size()`?
+
+Se a lista possui 3 produtos, o tamanho é `3`, mas os índices válidos são `0`, `1` e `2`. Escolher `3` seria inválido.
+
+---
+
+## 6. Lógica da venda
+
+A venda precisa seguir esta ordem:
+
+1. Verificar se existem produtos.
+2. Mostrar os produtos disponíveis.
+3. Ler o índice escolhido.
+4. Validar o índice.
+5. Ler a quantidade que será vendida.
+6. Verificar se a quantidade é maior que zero.
+7. Verificar se existe estoque suficiente.
+8. Atualizar a quantidade.
+9. Calcular e mostrar o valor da venda.
+
+Validação da quantidade:
+
+```java
+if (venda <= 0) {
+    System.out.println("Quantidade inválida!");
+} else if (venda > quantidades.get(escolha)) {
+    System.out.println("Estoque insuficiente!");
+}
+```
+
+O `else if` só é avaliado quando a primeira condição é falsa.
+
+Atualização do estoque:
+
+```java
+quantidades.set(
+    escolha,
+    quantidades.get(escolha) - venda
+);
+```
+
+Cálculo do valor da venda:
+
+```java
+double totalvenda = precos.get(escolha) * venda;
+
+System.out.printf("Valor da venda: R$ %.2f%n", totalvenda);
+```
+
+É importante validar a quantidade antes de diminuir o estoque. Caso contrário, seria possível deixar o estoque negativo.
+
+---
+
+## 7. Lógica da reposição
+
+A reposição segue uma lógica parecida com a venda, mas soma unidades ao estoque.
+
+Primeiro, verifica-se se a quantidade a adicionar é válida:
+
+```java
+if (reposicao <= 0) {
+    System.out.println("Quantidade inválida!");
+}
+```
+
+Depois, atualiza-se o estoque:
+
+```java
+quantidades.set(
+    escolha1,
+    quantidades.get(escolha1) + reposicao
+);
+```
+
+Na venda, você subtrai. Na reposição, você soma.
+
+- Venda: estoque atual − unidades vendidas.
+- Reposição: estoque atual + unidades adicionadas.
+
+---
+
+## 8. `if`, `else if`, `else` e operadores
+
+### `if`
+
+Executa um bloco se a condição for verdadeira.
+
+```java
+if (venda <= 0) {
+    System.out.println("Quantidade inválida!");
+}
+```
+
+### `else if`
+
+Verifica outra condição quando a condição anterior não foi atendida.
+
+```java
+if (venda <= 0) {
+    System.out.println("Quantidade inválida!");
+} else if (venda > quantidades.get(escolha)) {
+    System.out.println("Estoque insuficiente!");
+}
+```
+
+### `else`
+
+Executa quando as condições anteriores não foram atendidas.
+
+```java
+if (venda <= 0) {
+    System.out.println("Quantidade inválida!");
+} else if (venda > quantidades.get(escolha)) {
+    System.out.println("Estoque insuficiente!");
+} else {
+    // Realizar a venda
+}
+```
+
+### Operadores utilizados
+
+- `==`: igual a.
+- `!=`: diferente de.
+- `>`: maior que.
+- `<`: menor que.
+- `>=`: maior ou igual a.
+- `<=`: menor ou igual a.
+- `&&`: E — as duas condições precisam ser verdadeiras.
+- `||`: OU — pelo menos uma condição precisa ser verdadeira.
+- `!`: negação — inverte um valor booleano.
+
+---
+
+## 9. `while (true)`, `switch`, `break` e `return`
+
+### `while (true)`
+
+```java
+while (true) {
+    // Menu do programa
+}
+```
+
+Cria um laço que continua executando indefinidamente, até que exista uma instrução que o encerre.
+
+No seu programa, ele permite voltar ao menu depois de cadastrar, consultar, vender ou repor produtos.
+
+### `switch`
+
+```java
+switch (op) {
+    case 1:
+        // Cadastrar produto
+        break;
+
+    case 2:
+        // Consultar estoque
+        break;
+}
+```
+
+Escolhe qual bloco executar de acordo com o valor de `op`.
+
+### `break`
+
+Dentro do `switch`, encerra o caso atual e evita que a execução continue para os próximos casos.
+
+No `for`, encerra o laço.
+
+### `return`
+
+No seu caso:
+
+```java
+case 5:
+    System.out.println("Programa finalizado!");
+    input.close();
+    return;
+```
+
+Encerra a execução do método `main` e, consequentemente, o programa.
+
+---
+
+## 10. `Scanner` e `nextLine()`
+
+Importação:
+
+```java
+import java.util.Scanner;
+```
+
+Criação:
+
+```java
+Scanner input = new Scanner(System.in);
+```
+
+Métodos usados:
+
+- `nextInt()`: lê um número inteiro.
+- `nextDouble()`: lê um número decimal.
+- `nextLine()`: lê uma linha inteira de texto.
+
+### Por que usar `input.nextLine()` antes de ler o nome?
+
+Depois de usar `nextInt()`, a quebra de linha que você digitou ao pressionar Enter pode continuar pendente no `Scanner`.
+
+Por isso, no início do cadastro:
+
+```java
+input.nextLine();
+System.out.println("Nome do produto:");
+String nome1 = input.nextLine();
+```
+
+O primeiro `nextLine()` consome a quebra de linha que sobrou. O segundo lê o nome do produto.
+
+Sem esse cuidado, o programa pode pular a leitura do nome.
+
+**Atenção:** essa solução funciona porque o fluxo anterior usou `nextInt()`. Se você mudar a estratégia de leitura, a necessidade desse `nextLine()` também pode mudar.
+
+---
+
+## 11. `printf`, `%.2f` e `%n`
+
+Para exibir valores monetários com duas casas decimais:
+
+```java
+System.out.printf("Preço: R$ %.2f%n", precoUn1);
+```
+
+- `printf`: permite formatar a saída.
+- `%.2f`: exibe um número decimal com duas casas depois do separador decimal.
+- `%n`: pula para a próxima linha.
+- `precoUn1`: é o valor que será colocado no lugar de `%.2f`.
+
+Exemplo: um valor como `5.5` será exibido com duas casas decimais, como `5,50` ou `5.50`, dependendo da configuração regional do sistema.
+
+Use `printf` quando quiser controlar a formatação dos valores monetários.
+
+---
+
+## 12. Erros e melhorias para lembrar
+
+### Erro 1 — Esquecer de adicionar dados às listas
+
+Declarar variáveis não significa que o produto foi guardado permanentemente na lista.
+
+Use `.add()` para armazenar os dados.
+
+### Erro 2 — Consultar somente um produto
+
+Quando existem vários produtos, não basta acessar sempre a posição `0`. Use um `for` com `.size()` para percorrer a lista inteira.
+
+### Erro 3 — Confundir `.get()` e `.set()`
+
+- `.get(i)`: consulta o valor.
+- `.set(i, valor)`: altera o valor existente.
+- `.add(valor)`: adiciona um elemento.
+
+### Erro 4 — Não validar o índice
+
+Um índice negativo ou igual ao tamanho da lista pode causar `IndexOutOfBoundsException`.
+
+Valide a escolha antes de usar `.get()` ou `.set()` com o índice informado pelo usuário.
+
+### Erro 5 — Permitir vendas inválidas
+
+A quantidade vendida precisa ser maior que zero e não pode ultrapassar o estoque disponível.
+
+### Erro 6 — Atualizar o estoque antes de validar
+
+Primeiro valide a operação. Só depois altere a quantidade.
+
+### Erro 7 — Não validar entradas numéricas
+
+Se o programa espera um número e o usuário digita letras, `nextInt()` ou `nextDouble()` pode lançar `InputMismatchException`.
+
+Uma melhoria futura é usar `hasNextInt()` e `hasNextDouble()` para verificar se a entrada tem o tipo esperado e consumir a entrada inválida antes de continuar.
+
+### Erro 8 — Usar uma variável que pode ser desnecessária
+
+Você criou:
+
+```java
+boolean cadastrado = false;
+```
+
+E depois alterou seu valor quando cadastrou um produto.
+
+Como a lista `nomes` já permite verificar se há produtos, você também pode escrever:
+
+```java
+if (nomes.isEmpty()) {
+    System.out.println("Nenhum produto cadastrado!");
+}
+```
+
+Assim, a variável `cadastrado` pode ser removida se não for necessária em outra parte do programa.
+
+### Erro 9 — Não considerar nomes duplicados
+
+Atualmente, o programa permite cadastrar o mesmo nome mais de uma vez. Isso não é necessariamente um erro: depende da regra desejada.
+
+Se cada produto precisar ser único, você pode verificar se o nome já existe antes de cadastrar.
+
+### Erro 10 — Organização futura
+
+As três listas funcionam, mas precisam manter os dados alinhados. Em um projeto mais avançado, você pode criar uma classe `Produto` com nome, preço e quantidade e armazenar os objetos em uma única lista.
+
+---
+
+## 13. Checklist para testar o programa
+
+- [ ] Cadastrar um produto válido.
+- [ ] Cadastrar dois ou mais produtos.
+- [ ] Consultar e conferir se todos aparecem.
+- [ ] Tentar cadastrar nome vazio.
+- [ ] Tentar cadastrar preço zero ou negativo.
+- [ ] Tentar cadastrar quantidade negativa.
+- [ ] Tentar vender zero ou uma quantidade negativa.
+- [ ] Tentar vender mais unidades do que existem.
+- [ ] Fazer uma venda válida e conferir o estoque restante.
+- [ ] Tentar escolher um índice negativo ou inexistente.
+- [ ] Fazer uma reposição válida.
+- [ ] Tentar repor zero ou uma quantidade negativa.
+- [ ] Conferir o valor total em estoque e o valor da venda.
+- [ ] Testar o encerramento do programa.
+- [ ] Testar o que acontece quando letras são digitadas onde o programa espera números.
+
+## Resumo dos métodos principais
+
+| Método | Para que serve |
+|---|---|
+| `.add()` | Adicionar um elemento |
+| `.get()` | Consultar um elemento pelo índice |
+| `.set()` | Alterar um elemento existente |
+| `.size()` | Saber quantos elementos existem |
+| `.isEmpty()` | Verificar se a lista está vazia |
+| `.trim()` | Remover espaços das extremidades de um texto |
+| `nextInt()` | Ler um inteiro |
+| `nextDouble()` | Ler um decimal |
+| `nextLine()` | Ler uma linha de texto |
+| `printf()` | Exibir valores com formatação |
+
+**Lembrete:** não precisa decorar tudo de uma vez. O mais importante é entender quando usar cada método e praticar com o seu próprio código.
+ 
