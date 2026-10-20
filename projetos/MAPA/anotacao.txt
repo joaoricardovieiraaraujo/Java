@@ -1,0 +1,60 @@
+Aqui está uma **anotação de estudo completa**, organizada por tópicos e de fácil leitura, para ajudar a fixar os conceitos do exercício e servir de apoio para as suas provas e trabalhos!
+
+---
+
+# 📚 Anotação de Estudo: POO, UML e Banco de Dados
+
+## 1. Conceitos Fundamentais de POO (Programação Orientada a Objetos)
+
+* **Classe:** É o "molde" ou "projeto" que define a estrutura e o comportamento dos objetos.
+* **Objeto:** É a instância (a criação prática) de uma classe na memória.
+* **Encapsulamento:** Protege os dados de um objeto limitando o acesso direto aos atributos. Utiliza modificadores de acesso (`private`) e fornece métodos de acesso (`getters` e `setters`).
+* **Herança:** Permite que uma classe (**filha/subclasse**) herde atributos e métodos de outra classe (**mãe/superclasse**), promovendo o reuso de código (uso da palavra-chave `extends` em Java).
+* **Polimorfismo:** Capacidade de um mesmo método se comportar de formas diferentes dependendo do objeto que o executa (por exemplo, a sobrescrita `@Override` do método `exibirDados()`).
+
+---
+
+## 2. Leitura do Diagrama UML (Visibilidade e Notação)
+
+| Símbolo | Modificador de Acesso em Java | Significado | Exemplo no Diagrama |
+| --- | --- | --- | --- |
+| - | `private` | Acessível apenas dentro da própria classe. | `-String placa` |
+| + | `public` | Acessível de qualquer parte do projeto. | `+exibirDados() : void` |
+| # | `protected` | Acessível na própria classe e suas subclasses. | *(Pode ser usado na classe mãe)* |
+| △ | Setinha vazia | Indica relação de **Herança** ("é um"). | `Caminhao` herda de `Veiculo` |
+
+---
+
+## 3. Resumo Teórico do Exercício MAPA
+
+### A Structure do Código:
+
+1. **`Veiculo` (Superclasse):**
+* Contém atributos genéricos comuns a qualquer veículo: `placa` e `ano`.
+* Oferece **sobrecarga de método** no `setAno(int)` e `setAno(String)`, permitindo receber o ano em diferentes formatos de dados.
+
+
+2. **`Caminhao` e `Onibus` (Subclasses):**
+* Herdam `placa` e `ano` da classe `Veiculo`.
+* Cada uma adiciona um atributo específico: `eixos` para `Caminhao` e `assentos` para `Onibus`.
+* Usam `super(placa, ano)` no construtor para repassar a inicialização à classe mãe.
+
+
+3. **`Main` e Polimorfismo com Arrays:**
+* O array é criado do tipo genérico `Veiculo[]` (`Veiculo[] frota = new Veiculo[3];`).
+* Como `Caminhao` **é um** `Veiculo` e `Onibus` **é um** `Veiculo`, ambos podem ser guardados no mesmo array.
+* Quando o loop `for` chama `v.exibirDados()`, o Java executa automaticamente o método específico do caminhão ou do ônibus.
+
+
+
+---
+
+## 4. Mapeamento Objeto-Relacional (POO para SQL)
+
+Na modelagem de bancos de dados relacionais para herança em POO, uma abordagem eficiente é a **Tabela Única (Single Table)**:
+
+* **Tabela:** Cria-se uma única tabela (`veiculo`) que guarda os dados genéricos (`placa`, `ano`) e os específicos (`eixos`, `assentos`).
+* **Coluna Discriminadora:** A coluna `tipo_veiculo` serve para identificar a subclasse do objeto armazenado (ex: `'CAMINHAO'` ou `'ONIBUS'`).
+* **Valores Nulos:** Atributos específicos ficam como `NULL` se o registro não for daquele tipo (ex: o campo `assentos` fica nulo para caminhões).
+
+---
