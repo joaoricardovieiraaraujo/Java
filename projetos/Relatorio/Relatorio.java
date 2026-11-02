@@ -1,3 +1,5 @@
+package Relatorio;
+
 public class Relatorio {
     // Atributo privado para armazenar o conteúdo do relatório
     private final String conteudo;
