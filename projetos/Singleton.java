@@ -1,4 +1,4 @@
-package UiEmJava;
+
 
 public class Singleton {
     // Mantém uma única instância da classe

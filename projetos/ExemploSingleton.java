@@ -1,4 +1,4 @@
-package UiEmJava;
+
 
 public class ExemploSingleton {
     public static void main(String[] ags) {
